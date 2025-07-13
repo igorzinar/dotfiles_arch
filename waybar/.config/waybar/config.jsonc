@@ -2,7 +2,7 @@
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["network", "pulseaudio", "battery", "clock"],
+  "modules-right": ["hyprland/language","keyboard-state", "sway/language","network", "pulseaudio", "battery", "clock"],
   "clock": {
     "format": "<span foreground='#f5c2e7'>   </span>{:%a %d %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
@@ -35,6 +35,12 @@
       "format-icons": {
           "default": ["", "", " "]
       },
-      "on-click": "pavucontrol"
+      "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  },
+  "hyprland/language": {
+    "format": "  {} ", 
+    "format-ru": "RU",
+    "format-en": "US",
   }
-}
+
+ }
