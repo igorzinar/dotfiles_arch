@@ -1,0 +1,93 @@
+" =========================
+" BASIC SETTINGS
+" =========================
+set number
+set relativenumber
+
+let mapleader = " "
+
+silent! nunmap u
+silent! nunmap <C-r>
+
+" =========================
+" CLIPBOARD
+" =========================
+set clipboard+=unnamed
+set clipboard+=ideaput
+
+nnoremap <leader>x "+dd
+vnoremap <leader>x "+d
+
+" =========================
+" SCROLLING
+" =========================
+nnoremap <leader>d <C-d>
+nnoremap <leader>u <C-u>
+vnoremap <leader>d <C-d>
+vnoremap <leader>u <C-u>
+
+" =========================
+" PROJECT TREE
+" =========================
+nnoremap <leader>p :action ActivateProjectToolWindow<CR>
+
+set NERDTree
+let g:NERDTreeMapActivateNode = 'l'
+let g:NERDTreeMapJumpParent   = 'h'
+
+" =========================
+" TERMINAL
+" =========================
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>t :action ActivateTerminalToolWindow<CR>
+
+" =========================
+" CLOSE TOOL WINDOWS
+" =========================
+nnoremap <leader>q :action HideActiveToolWindow<CR>
+
+" =========================
+" SPLITS & WINDOW NAVIGATION
+" =========================
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+nnoremap <leader>v :action SplitVertically<CR>
+nnoremap <leader>h :action SplitHorizontally<CR>
+nnoremap <leader>u :action Unsplit<CR>
+
+" =========================
+" NEW LINE INSERTION
+" =========================
+nnoremap <CR> o<Esc>
+nnoremap <S-Enter> O<Esc>
+vnoremap <CR> <Esc>o<Esc>
+vnoremap <S-Enter> <Esc>O<Esc>
+
+" =========================
+" GO / CODE NAVIGATION
+" =========================
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gr :action FindUsages<CR>
+
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
+
+" =========================
+" CONFIG EDIT / RELOAD
+" =========================
+nnoremap <leader>ev :e ~/.ideavimrc<CR>
+nnoremap <leader>sv :write<CR>:action IdeaVim.ReloadVimRc.reload<CR>
+
+" =========================
+" TABS
+" =========================
+nnoremap <leader>c :action CloseActiveTab<CR>
+nnoremap <leader>ca :action CloseAllButActive<CR>
+
+" Use IdeaVim actions for tab switching
+nnoremap gt :action NextTab<CR>
+nnoremap gT :action PreviousTab<CR>
