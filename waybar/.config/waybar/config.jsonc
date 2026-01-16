@@ -65,7 +65,7 @@
   "mpris": {
     "format": "<span size='13000' foreground='#cba6f7'>󰎈 </span>{artist} - {title}",
     "format-paused": "<span size='13000' foreground='#cba6f7'> </span>{artist} - {title}",
-    "max-length": 35,
+    "max-length": 20,
     "tooltip-format": "{player} | {status}\n{title}\n{artist}"
   }
 }
