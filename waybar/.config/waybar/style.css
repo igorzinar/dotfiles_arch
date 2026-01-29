@@ -53,7 +53,9 @@ button:hover {
 #workspaces button.urgent {
     background-color: #eb4d4b;
 }
-
+#group-hardware,
+#custom-gpu-usage,
+#custom-gpu-vram,
 #pulseaudio,
 #clock,
 #battery,
@@ -125,10 +127,62 @@ button:hover {
     padding-left: 6px;
     padding-right: 6px;
 }
-#custom-gpu-usage, #custom-gpu-vram {
-    background-color: #fab387; /* Peach color for GPU */
-    color: @lavender;
-    padding: 20px;
+/*#custom-gpu-usage, #custom-gpu-vram {*/
+/*    !*background-color: #fab387; !* Peach color for GPU *!*!*/
+/*    color: @red;*/
+/*    border-radius: 10px;*/
+/*    margin: 2px;*/
+/*}*/
+
+
+/* Styling for the Hardware Group */
+#group-hardware {
+    background-color: @surface0; /* Uses your Catppuccin surface color */
+    border-radius: 12px;
+    border: 1px solid @surface1;
+}
+
+/* Ensure the icons inside the drawer look consistent */
+#cpu, #memory, #custom-gpu-usage, #custom-gpu-vram, #custom-system-icon {
+    background: transparent;
+    border: none;
+    margin: 0 4px;
+}
+
+/* Hover effect to show the drawer is interactive */
+#group-hardware:hover {
+    background-color: @surface1;
+}
+#privacy {
+    background-color: @surface0;
+    padding: 0 8px;
+    margin: 4px;
     border-radius: 10px;
-    margin: 2px;
+    border: 1px solid @red; /* Red border to indicate it's a security module */
+}
+
+#privacy-item {
+    padding: 0 4px;
+}
+
+#privacy-item.screenshare {
+    color: @yellow; /* Screensharing is yellow/warning */
+}
+
+#privacy-item.audio-in {
+    color: @red; /* Microphone is red/hot */
+}
+
+#group-bt-drawer {
+    background-color: @surface0;
+    border-radius: 12px;
+    padding: 0 8px;
+    margin: 4px 2px;
+    border: 1px solid @surface1;
+}
+
+/* This makes the text only appear when the drawer is open */
+#bluetooth-details {
+    margin-left: 5px;
+    color: @text;
 }
