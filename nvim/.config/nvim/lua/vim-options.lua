@@ -3,8 +3,16 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
 vim.g.mapleader = " "
-
+vim.opt.clipboard = "unnamedplus"
 vim.opt.swapfile = false
+
+-- Search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- UI
+vim.wo.number = true
+vim.opt.relativenumber = true
 
 -- Navigate vim panes better
 vim.keymap.set('n', '<c-k>', ':wincmd k<CR>')
