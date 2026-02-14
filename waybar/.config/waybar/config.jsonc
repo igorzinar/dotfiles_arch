@@ -2,8 +2,20 @@
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["mpris","privacy","tray","hyprland/language","keyboard-state", "sway/language",
-  "network", "pulseaudio", "battery","group/hardware","group/bt-drawer", "clock"],
+  "modules-right": [
+    "mpris",
+    "privacy",
+    "tray",
+    "hyprland/language",
+    "keyboard-state",
+    "sway/language",
+    "network",
+    "pulseaudio",
+    "battery",
+    "group/hardware",
+    "group/bt-drawer",
+    "clock"
+  ],
 
   // --- Hardware Group Drawer ---
   "group/hardware": {
@@ -16,6 +28,7 @@
     "modules": [
       "custom/system-icon", // The icon that is always visible
       "cpu",
+      "custom/disk",
       "memory",
       "custom/gpu-usage",
       "custom/gpu-vram"
@@ -55,6 +68,15 @@
       "bluetooth#icon", // The static icon
       "bluetooth#details" // The long name/battery
     ]
+  },
+
+  // Disk usage module (custom) - shows root (/) usage percentage
+  "custom/disk": {
+    "interval": 30,
+    "exec": "df -h / | awk 'NR==2 {print $5}'",
+    "format": "<span size='13000' foreground='#f38ba8'>  {}</span>",
+    "on-click": "kitty -e yazi ~/",
+    "tooltip": false
   },
 
   "bluetooth#icon": {
@@ -103,8 +125,8 @@
     },
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "max-volume": 150, // <--- ADD THIS LINE
-    "scroll-step": 5,  // <--- ADD THIS LINE (recommended for smoother control)
-    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",  // <--- ADD THIS LINE
+    "scroll-step": 5, // <--- ADD THIS LINE (recommended for smoother control)
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%", // <--- ADD THIS LINE
     "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%" // <--- ADD THIS LINE
   },
   "hyprland/language": {
@@ -115,18 +137,18 @@
   "tray": {
     "icon-size": 21,
     "spacing": 10
-},
-"cpu": {
-  "interval": 3,
-  "format": "<span size='13000' foreground='#fab387'>  {usage}%</span>",
-  "tooltip-format": "CPU: {usage}%\nCores: {cores}"
-},
+  },
+  "cpu": {
+    "interval": 3,
+    "format": "<span size='13000' foreground='#fab387'>  {usage}%</span>",
+    "tooltip-format": "CPU: {usage}%\nCores: {cores}"
+  },
 
-"memory": {
-  "interval": 5,
-  "format": "<span size='13000' foreground='#94e2d5'>  {percentage}%</span>",
-  "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB"
-},
+  "memory": {
+    "interval": 5,
+    "format": "<span size='13000' foreground='#94e2d5'>  {percentage}%</span>",
+    "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB"
+  },
 
   "mpris": {
     "format": "<span size='13000' foreground='#cba6f7'>󰎈 </span>{artist} - {title}",
@@ -157,5 +179,5 @@
     "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-  }
+  },
 }
