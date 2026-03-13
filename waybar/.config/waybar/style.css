@@ -54,6 +54,7 @@ button:hover {
     background-color: #eb4d4b;
 }
 #group-hardware,
+#custom-eye,
 #custom-gpu-usage,
 #custom-gpu-vram,
 #pulseaudio,
@@ -185,4 +186,17 @@ button:hover {
 #bluetooth-details {
     margin-left: 5px;
     color: @text;
+}
+
+
+#custom-eye {
+    color: @peach;
+    border-bottom: 2px solid @peach;
+}
+
+/* Эффект при наведении, как у твоих кнопок */
+#custom-eye:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: @rosewater;
+    border-top: 2px solid @rosewater;
 }

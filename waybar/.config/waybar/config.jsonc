@@ -5,6 +5,7 @@
   "modules-right": [
     "mpris",
     "privacy",
+    "custom/eye",
     "tray",
     "hyprland/language",
     "keyboard-state",
@@ -180,4 +181,13 @@
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
   },
+  "custom/eye": {
+    "format": "<span size='13000' foreground='#fab387'>{icon}</span>",
+    "format-icons": ["󰛨"],
+    "tooltip": true,
+    "tooltip-format": "ЛКМ: 5000K (Комфорт)\nПКМ: Выключить защиту\n\nНе забывай капать Hylo Comod!",
+    "on-click": "pkill hyprsunset; hyprsunset --temperature 5000K",
+    "on-click-right": "pkill hyprsunset",
+    "interval": "once"
+  }
 }
