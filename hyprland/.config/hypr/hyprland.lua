@@ -209,6 +209,9 @@ hl.monitor({ output = "desc:lenovo group limited l28u-35 u1akw245", mode = "3840
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1, bitdepth = 8 })
 hl.monitor({ output = "eDP-1", mode = "2560x1600@165", position = "0x0", scale = 1, bitdepth = 8 })
 
+
+
+
 --------------------------------------------------------------------------------
 -- 2. ENVIRONMENT VARIABLES
 --------------------------------------------------------------------------------
@@ -217,11 +220,13 @@ hl.env("XCURSOR_SIZE", "28")
 hl.env("HYPRCURSOR_THEME", "catppuccin-mocha-dark-cursors")
 hl.env("HYPRCURSOR_SIZE", "28")
 
--- NVIDIA Hardware Handshakes
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
+-- NVIDIA / multi-GPU setup: iGPU primary, dGPU secondary (Optimus laptop)
+-- LIBVA_DRIVER_NAME, GBM_BACKEND, __GLX_VENDOR_LIBRARY_NAME intentionally
+-- NOT forced to nvidia — let the iGPU be the default so the whole desktop
+-- isn't rendered on the 4090.
+hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")  -- iGPU (card1) first, RTX 4090 (card0) second
+
 hl.env("XDG_SESSION_TYPE", "wayland")
-hl.env("GBM_BACKEND", "nvidia-drm")
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("__GL_VRR_ALLOWED", "0")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("XDG_DESKTOP_PORTAL_HYPRLAND_FORCE_SHM", "1")
@@ -229,8 +234,11 @@ hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("EGL_PLATFORM", "wayland")
 hl.env("OGL_DEDICATED_HW_STATE_PER_CONTEXT", "ENABLE_ROBUST")
+hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 
---------------------------------------------------------------------------------
+-- Only enable if the external-monitor CPU/fan issue persists after testing:
+-- hl.env("AQ_FORCE_LINEAR_BLIT", "0")
+-----------------------------------------------
 -- 3. AUTOSTART
 -- --------------------------------------------------------------------------------
 -- hl.on("hyprland.start", function()
