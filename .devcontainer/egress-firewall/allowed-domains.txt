@@ -1,0 +1,18 @@
+# Outbound HTTPS (443) is allowed only to these hosts (resolved at container
+# start) plus GitHub's published ranges. One host per line, # for comments.
+# Edit, then rebuild: devpod up . --recreate --ide none
+
+# Claude Code: API, login / token refresh, claude.ai connectors
+api.anthropic.com
+claude.ai
+platform.claude.com
+console.anthropic.com
+mcp-proxy.anthropic.com
+
+# npm (Claude Code install + auto-update)
+registry.npmjs.org
+
+# GitHub content hosts (api/web/git ranges come from api.github.com/meta)
+objects.githubusercontent.com
+raw.githubusercontent.com
+codeload.github.com

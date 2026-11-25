@@ -55,8 +55,8 @@ button:hover {
 }
 #group-hardware,
 #custom-eye,
-#custom-gpu-usage,
-#custom-gpu-vram,
+#custom-gpu,
+#custom-disk,
 #pulseaudio,
 #clock,
 #battery,
@@ -129,12 +129,6 @@ button:hover {
     padding-left: 6px;
     padding-right: 6px;
 }
-/*#custom-gpu-usage, #custom-gpu-vram {*/
-/*    !*background-color: #fab387; !* Peach color for GPU *!*!*/
-/*    color: @red;*/
-/*    border-radius: 10px;*/
-/*    margin: 2px;*/
-/*}*/
 
 
 /* Styling for the Hardware Group */
@@ -144,11 +138,27 @@ button:hover {
     border: 1px solid @surface1;
 }
 
-/* Ensure the icons inside the drawer look consistent */
-#cpu, #memory, #custom-gpu-usage, #custom-gpu-vram, #custom-system-icon {
+/* Modules inside the hardware drawer */
+#cpu, #memory, #custom-disk, #custom-gpu {
     background: transparent;
     border: none;
     margin: 0 4px;
+    color: @text;
+}
+
+/* High load: peach at warning, red at critical (CPU/RAM thresholds in
+   config.jsonc, GPU thresholds in scripts/gpu.sh) */
+#cpu.warning, #memory.warning, #custom-gpu.warning {
+    color: @peach;
+}
+
+#cpu.critical, #memory.critical, #custom-gpu.critical {
+    color: @red;
+}
+
+/* NVIDIA GPU asleep */
+#custom-gpu.off {
+    color: @overlay0;
 }
 
 /* Hover effect to show the drawer is interactive */
@@ -173,20 +183,6 @@ button:hover {
 
 #privacy-item.audio-in {
     color: @red; /* Microphone is red/hot */
-}
-
-#group-bt-drawer {
-    background-color: @surface0;
-    border-radius: 12px;
-    padding: 0 8px;
-    margin: 4px 2px;
-    border: 1px solid @surface1;
-}
-
-/* This makes the text only appear when the drawer is open */
-#bluetooth-details {
-    margin-left: 5px;
-    color: @text;
 }
 
 
@@ -253,4 +249,26 @@ button:hover {
 
 #backlight-slider slider:hover {
     background-color: @rosewater;
+}
+
+/* ---------- Power profile ---------- */
+
+#power-profiles-daemon {
+    margin: 2px 4px;
+    padding: 0 6px;
+}
+
+#power-profiles-daemon.performance {
+    color: @red;
+    border-bottom: 2px solid @red;
+}
+
+#power-profiles-daemon.balanced {
+    color: @blue;
+    border-bottom: 2px solid @blue;
+}
+
+#power-profiles-daemon.power-saver {
+    color: @green;
+    border-bottom: 2px solid @green;
 }

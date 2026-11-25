@@ -1,0 +1,8 @@
+{
+  "id": "egress-firewall",
+  "version": "1.0.0",
+  "name": "Egress firewall (allowlist) + no sudo",
+  "description": "Default-deny outbound traffic except HTTPS to allowed-domains.txt and GitHub. Applied as root at container start via entrypoint; removes passwordless sudo so the agent user cannot undo it.",
+  "entrypoint": "/usr/local/share/egress-firewall/entrypoint.sh",
+  "installsAfter": ["ghcr.io/devcontainers/features/common-utils"]
+}

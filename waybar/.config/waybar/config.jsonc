@@ -9,38 +9,32 @@
     "tray",
     "hyprland/language",
     "keyboard-state",
-    "sway/language",
     "network",
     "group/brightness",
     "pulseaudio",
     "battery",
+    "power-profiles-daemon",
     "group/hardware",
-    "group/bt-drawer",
     "clock"
   ],
 
-  // --- Hardware Group Drawer ---
+  // --- Hardware drawer: CPU always visible, hover reveals RAM / disk / GPU.
+  // Turns peach at warning and red at critical load, so you notice without hovering.
   "group/hardware": {
     "orientation": "horizontal",
     "drawer": {
-      "transition-duration": 500,
-      "children-class": "not-memory",
+      "transition-duration": 300,
+      "children-class": "hardware-child",
       "transition-left-to-right": false
     },
     "modules": [
-      "custom/system-icon", // The icon that is always visible
-      "cpu",
-      "custom/disk",
+      "cpu", // always visible
       "memory",
-      "custom/gpu-usage",
-      "custom/gpu-vram"
+      "custom/disk",
+      "custom/gpu"
     ]
   },
 
-  "custom/system-icon": {
-    "format": "<span size='13000' foreground='#89b4fa'> 󰘚 </span>",
-    "tooltip": false
-  },
   "privacy": {
     "icon-spacing": 4,
     "icon-size": 18,
@@ -59,38 +53,12 @@
       }
     ]
   },
-  "group/bt-drawer": {
-    "orientation": "horizontal",
-    "drawer": {
-      "transition-duration": 500,
-      "children-class": "bluetooth-devices",
-      "transition-left-to-right": false
-    },
-    "modules": [
-      "bluetooth#icon", // The static icon
-      "bluetooth#details" // The long name/battery
-    ]
-  },
-
-  // Disk usage module (custom) - shows root (/) usage percentage
   "custom/disk": {
-    "interval": 30,
-    "exec": "df -h / | awk 'NR==2 {print $5}'",
-    "format": "<span size='13000' foreground='#f38ba8'>  {}</span>",
-    "on-click": "kitty -e yazi ~/",
-    "tooltip": false
-  },
-
-  "bluetooth#icon": {
-    "format": "<span color='#89b4fa'> </span>",
-    "format-connected": "<span color='#89b4fa'> </span>",
-    "tooltip-format": "{num_connections} connected"
-  },
-
-  "bluetooth#details": {
-    "format": "{status}",
-    "format-connected": "{device_alias} {device_battery_percentage}%",
-    "tooltip": false
+    "interval": 60,
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/disk.sh",
+    "format": "<span size='13000' foreground='#f38ba8'>󰋊  </span>{}",
+    "on-click": "kitty -e yazi ~/"
   },
 
   "clock": {
@@ -111,6 +79,18 @@
     "format-full": "<span size='13000' foreground='#B1E3AD'> </span>{capacity}%",
     "format-icons": ["", "", "", "", ""],
     "tooltip-format": "{time}"
+  },
+  // Power profile (needs power-profiles-daemon running). Click: cycle profiles.
+  "power-profiles-daemon": {
+    "format": "<span size='13000'>{icon}</span>",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}\n\nClick: next profile",
+    "tooltip": true,
+    "format-icons": {
+      "default": "󰾅",
+      "performance": "󰓅",
+      "balanced": "󰾅",
+      "power-saver": "󰾆"
+    }
   },
   "network": {
     "format-wifi": "<span size='13000' foreground='#f5e0dc'>   </span>{essid}",
@@ -157,10 +137,10 @@
       "default": ["", "", " "]
     },
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-    "max-volume": 150, // <--- ADD THIS LINE
-    "scroll-step": 5, // <--- ADD THIS LINE (recommended for smoother control)
-    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%", // <--- ADD THIS LINE
-    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%" // <--- ADD THIS LINE
+    "max-volume": 150,
+    "scroll-step": 5,
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
   },
   "hyprland/language": {
     "format": "  {} ",
@@ -173,14 +153,18 @@
   },
   "cpu": {
     "interval": 3,
-    "format": "<span size='13000' foreground='#fab387'>  {usage}%</span>",
-    "tooltip-format": "CPU: {usage}%\nCores: {cores}"
+    "format": "<span size='13000' foreground='#fab387'>  </span>{usage}%",
+    "states": { "warning": 70, "critical": 90 },
+    "tooltip-format": "CPU: {usage}%   Load: {load}\nHover: RAM / disk / GPU\nClick: btop",
+    "on-click": "kitty -e btop"
   },
 
   "memory": {
     "interval": 5,
-    "format": "<span size='13000' foreground='#94e2d5'>  {percentage}%</span>",
-    "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB"
+    "format": "<span size='13000' foreground='#94e2d5'>  </span>{percentage}%",
+    "states": { "warning": 80, "critical": 90 },
+    "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB\nSwap: {swapUsed:0.1f} / {swapTotal:0.1f} GiB\nClick: btop",
+    "on-click": "kitty -e btop"
   },
 
   "mpris": {
@@ -189,30 +173,15 @@
     "max-length": 20,
     "tooltip-format": "{player} | {status}\n{title}\n{artist} "
   },
-  "custom/gpu-usage": {
-    "interval": 2,
-    "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits",
-    "format": "<span size='13000' foreground='#89b4fa'>󰾲  {}%</span>",
-    "on-click": "kitty -e nvtop",
-    "tooltip": false
+  // One nvidia-smi call, skipped while the GPU sleeps (see scripts/gpu.sh)
+  "custom/gpu": {
+    "interval": 5,
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/gpu.sh",
+    "format": "<span size='13000' foreground='#89b4fa'>󰾲  </span>{}",
+    "on-click": "kitty -e nvtop"
   },
 
-  "custom/gpu-vram": {
-    "interval": 2,
-    "exec": "nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | awk '{printf \"%d%%\", $1/163.84}'",
-    "format": "<span size='13000' foreground='#cba6f7'>󰍛  {}</span>",
-    "on-click": "kitty -e nvtop",
-    "tooltip": false
-  },
-  "bluetooth": {
-    "format": "<span color='#00BFFF'>  </span>{status} ",
-    "format-connected": "<span color='#00BFFF'>  </span>{device_alias} ",
-    "format-connected-battery": "<span color='#00BFFF'>  </span>{device_alias}{device_battery_percentage}% ",
-    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-  },
   "custom/eye": {
     "format": "<span size='13000' foreground='#fab387'>{icon}</span>",
     "format-icons": ["󰛨"],

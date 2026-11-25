@@ -205,12 +205,16 @@ local mainModShift = "SUPER + SHIFT"
 --------------------------------------------------------------------------------
 -- 1. MONITORS
 --------------------------------------------------------------------------------
-hl.monitor({ output = "desc:lenovo group limited l28u-35 u1akw245", mode = "3840x2160@60", position = "auto", scale = 1.5 })
+-- 4K: scale 1.5 made the fans loud. Valid scales for 3840x2160 (whole-pixel
+-- results): 1, 1.066667, 1.2, 1.25, 1.333333, 1.5, 1.6, 2
+-- hl.monitor({
+--	output = "desc:lenovo group limited l28u-35 u1akw245",
+--	mode = "3840x2160@60",
+--	position = "auto",
+--	scale = 1.5,
+--  })
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1, bitdepth = 8 })
 hl.monitor({ output = "eDP-1", mode = "2560x1600@165", position = "0x0", scale = 1, bitdepth = 8 })
-
-
-
 
 --------------------------------------------------------------------------------
 -- 2. ENVIRONMENT VARIABLES
@@ -224,7 +228,7 @@ hl.env("HYPRCURSOR_SIZE", "28")
 -- LIBVA_DRIVER_NAME, GBM_BACKEND, __GLX_VENDOR_LIBRARY_NAME intentionally
 -- NOT forced to nvidia — let the iGPU be the default so the whole desktop
 -- isn't rendered on the 4090.
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")  -- iGPU (card1) first, RTX 4090 (card0) second
+hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0") -- iGPU (card1) first, RTX 4090 (card0) second
 
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("__GL_VRR_ALLOWED", "0")
@@ -251,14 +255,14 @@ hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 -- Remove the manual 'systemctl start' lines for portals
 -- Instead, ensure they are started via the D-Bus activation system.
 hl.on("hyprland.start", function()
-    hl.exec_cmd("waybar & swaync & hypridle & hyprpaper & nm-applet")
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("systemctl --user start hyprland-session.target")
-    hl.exec_cmd("hyprsunset --temperature 5000K")
+	hl.exec_cmd("waybar & swaync & hypridle & hyprpaper & nm-applet & blueman-applet")
+	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+	hl.exec_cmd("systemctl --user start hyprland-session.target")
+	hl.exec_cmd("hyprsunset --temperature 5000K")
 end)
 
 hl.on("hyprland.shutdown", function()
-    os.execute("systemctl --user stop hyprland-session.target && sleep 0.1")
+	os.execute("systemctl --user stop hyprland-session.target && sleep 0.1")
 end)
 
 hl.permission({ binary = "/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", type = "screencopy", mode = "allow" })
@@ -268,50 +272,50 @@ hl.permission({ binary = "/usr/bin/grim", type = "screencopy", mode = "allow" })
 -- 4. SYSTEM VARIABLES & LOOK
 --------------------------------------------------------------------------------
 hl.config({
-    general = {
-        gaps_in = 5,
-        gaps_out = 10,
-        border_size = 2,
-        col = {
-            active_border = "rgba(33ccffee)",
-            inactive_border = "rgba(595959aa)"
-        },
-        resize_on_border = false,
-        allow_tearing = false,
-        layout = "dwindle"
-    },
-    ecosystem = {
-            enforce_permissions = false
-        },
+	general = {
+		gaps_in = 5,
+		gaps_out = 10,
+		border_size = 2,
+		col = {
+			active_border = "rgba(33ccffee)",
+			inactive_border = "rgba(595959aa)",
+		},
+		resize_on_border = false,
+		allow_tearing = false,
+		layout = "dwindle",
+	},
+	ecosystem = {
+		enforce_permissions = false,
+	},
 
-    decoration = {
-        rounding = 10,
-        rounding_power = 2,
-        active_opacity = 1.0,
-        inactive_opacity = 1.0,
-        shadow = { enabled = false },
-        blur = { enabled = false }
-    },
+	decoration = {
+		rounding = 10,
+		rounding_power = 2,
+		active_opacity = 1.0,
+		inactive_opacity = 1.0,
+		shadow = { enabled = false },
+		blur = { enabled = false },
+	},
 
-    animations = { enabled = false },
-    dwindle = { preserve_split = true, force_split = 2 },
-    master = { new_status = "master" },
+	animations = { enabled = false },
+	dwindle = { preserve_split = true, force_split = 2 },
+	master = { new_status = "master" },
 
-    misc = {
-        force_default_wallpaper = -1,
-        disable_hyprland_logo = true,
-        disable_splash_rendering = true
-    },
+	misc = {
+		force_default_wallpaper = -1,
+		disable_hyprland_logo = true,
+		disable_splash_rendering = true,
+	},
 
-    input = {
-        kb_layout = "us,ru",
-        kb_options = "grp:alt_shift_toggle",
-        follow_mouse = 1,
-        sensitivity = 0,
-        touchpad = { natural_scroll = false }
-    },
+	input = {
+		kb_layout = "us,ru",
+		kb_options = "grp:alt_shift_toggle",
+		follow_mouse = 1,
+		sensitivity = 0,
+		touchpad = { natural_scroll = false },
+	},
 
-    cursor = { no_hardware_cursors = 1 }
+	cursor = { no_hardware_cursors = 1 },
 })
 
 --------------------------------------------------------------------------------
@@ -358,8 +362,8 @@ hl.bind(mainModShift .. " + F4", hl.dsp.exec_cmd("pkill hyprsunset"))
 -- 7. WORKSPACE GENERATION LOOP (0-9)
 --------------------------------------------------------------------------------
 for i = 0, 9 do
-    local key = tostring(i)
-    local ws = tostring(i == 0 and 10 or i)
-    hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = ws }))
-    hl.bind(mainModShift .. " + " .. key, hl.dsp.window.move({ workspace = ws }))
+	local key = tostring(i)
+	local ws = tostring(i == 0 and 10 or i)
+	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = ws }))
+	hl.bind(mainModShift .. " + " .. key, hl.dsp.window.move({ workspace = ws }))
 end

@@ -4,13 +4,21 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:1": {
       "configureZshAsDefaultShell": true
-    }
+    },
+    "./egress-firewall": {}
   },
-  "runArgs": ["--userns=keep-id", "--security-opt", "label=disable"],
+  "runArgs": [
+    "--userns=keep-id",
+    "--security-opt=no-new-privileges",
+    "--cap-add=NET_ADMIN"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
     "source=claude-config-${localWorkspaceFolderBasename},target=/home/node/.claude,type=volume"
   ],
-  "postCreateCommand": "sudo chown -R node:node /home/node/.claude && npm install -g @anthropic-ai/claude-code",
+  "postCreateCommand": "npm install -g @anthropic-ai/claude-code@2.1.331",
+  "postStartCommand": "echo 'Ready in /workspaces/${localWorkspaceFolderBasename}'",
   "customizations": {
     "jetbrains": { "backend": "WebStorm", "plugins": ["com.anthropic.claude"] }
   }
