@@ -25,7 +25,17 @@ return {
     indent = { enabled = true },
     input = { enabled = true },
     git = { enabled = true },
-    picker = { enabled = true },
+    picker = {
+      enabled = true,
+      -- Show dotfiles/dotfolders (.config, .github, .env, ...) by default.
+      -- .git/ stays excluded; gitignored files (node_modules) stay hidden.
+      -- Toggle inside the picker: alt+h = hidden, alt+i = ignored.
+      sources = {
+        files = { hidden = true },
+        grep = { hidden = true },
+        explorer = { hidden = true },
+      },
+    },
     notifier = { enabled = true },
     quickfile = { enabled = true },
     scroll = { enabled = false },
@@ -42,5 +52,6 @@ return {
     { "<leader>fb",       function() Snacks.picker.buffers() end,     desc = "Buffers" },
     { "<leader>fg",       function() Snacks.picker.grep() end,        desc = "Grep Files" },
     { "<C-n>",            function() Snacks.explorer() end,           desc = "Explorer" },
+    { "<leader>bd",       function() Snacks.bufdelete() end,          desc = "Close buffer (keep window)" },
   }
 }

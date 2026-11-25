@@ -11,6 +11,7 @@
     "keyboard-state",
     "sway/language",
     "network",
+    "group/brightness",
     "pulseaudio",
     "battery",
     "group/hardware",
@@ -118,6 +119,37 @@
     "format-disconnected": "<span size='13000' foreground='#f5e0dc'>   </span>Disconnected",
     "tooltip-format-wifi": "Signal Strenght: {signalStrength}%"
   },
+  // --- Brightness drawer: icon+% always visible, slider slides out on hover ---
+  "group/brightness": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "brightness-slider",
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "backlight", // always visible: icon + percentage
+      "backlight/slider" // revealed on hover
+    ]
+  },
+
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "<span size='13000' foreground='#f9e2af'>{icon} </span>{percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "tooltip-format": "Brightness: {percent}%\nScroll or drag the slider to adjust",
+    "scroll-step": 5,
+    "on-scroll-up": "brightnessctl -d intel_backlight set +5%",
+    "on-scroll-down": "brightnessctl -d intel_backlight set 5%-"
+  },
+
+  "backlight/slider": {
+    "device": "intel_backlight",
+    "min": 5,
+    "max": 100,
+    "orientation": "horizontal"
+  },
+
   "pulseaudio": {
     "format": "{icon}  {volume}%",
     "format-muted": "",

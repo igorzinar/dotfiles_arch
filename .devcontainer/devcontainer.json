@@ -1,0 +1,17 @@
+{
+  "name": "Node.js & Claude Code Sandbox",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24@sha256:2015e2c863cb1e608bc0876860dd063cdb9e3d9a02dca63d1c2fce8fad02d088",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:1": {
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "runArgs": ["--userns=keep-id", "--security-opt", "label=disable"],
+  "mounts": [
+    "source=claude-config-${localWorkspaceFolderBasename},target=/home/node/.claude,type=volume"
+  ],
+  "postCreateCommand": "sudo chown -R node:node /home/node/.claude && npm install -g @anthropic-ai/claude-code",
+  "customizations": {
+    "jetbrains": { "backend": "WebStorm", "plugins": ["com.anthropic.claude"] }
+  }
+}

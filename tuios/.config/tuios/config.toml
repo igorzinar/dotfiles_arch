@@ -1,0 +1,86 @@
+# TUIOS Configuration File
+# Documentation: https://github.com/Gaurav-Gosain/tuios
+# For keybindings documentation, run: tuios keybinds list
+#
+# tuios watches this file; saves apply immediately. A file with an error is
+# not applied — the current settings stay and the error is shown on screen.
+#
+# Mostly defaults; see `tuios keybinds doctor` for binding clashes.
+
+[startup]
+tiled = true
+daemon = true
+
+[appearance]
+theme = "catppuccin_macchiato"
+theme_transition = "none"
+show_clock = false
+show_cpu = false
+show_ram = false
+dock_compact = true
+dock_mode_split_letter = true
+
+[appearance.sidebar]
+editor = "nvim"
+width = 30
+
+[appearance.sidebar.right]
+width = 30
+
+[workspaces]
+new_window_when_empty = false
+
+[notifications]
+bell = "toast"
+
+[notifications.agent]
+sound_mode = "audio"
+
+[agents]
+enabled = true
+
+[debug]
+show_key_events = true
+
+[daemon]
+log_level = "verbose"
+
+[hosts.ubuntu_dev]
+addr = "ubuntu_proxmox"
+
+# ============================================================================
+# GLOBAL KEYBINDINGS
+# ============================================================================
+# Default ctrl+p is taken by the command palette, which steals it from nvim
+# (file picker) and the shell (history back). ctrl+shift+p is not used: in
+# kitty it is the prefix for hints.
+[keybindings.global]
+command_palette = ["ctrl+alt+p"]
+
+# ============================================================================
+# CUSTOM KEYBINDINGS — scratch popups
+# ============================================================================
+
+[[keybindings.command]]
+key = "prefix+alt+g"
+type = "scratch"
+command = "lazygit"
+description = "Lazygit"
+width = "95%"
+height = "95%"
+
+[[keybindings.command]]
+key = "prefix+alt+y"
+type = "scratch"
+command = "yazi"
+description = "Yazi"
+width = "95%"
+height = "95%"
+
+[[keybindings.command]]
+key = "prefix+alt+d"
+type = "scratch"
+command = "lazydocker"
+description = "Lazydocker"
+width = "90%"
+height = "90%"

@@ -65,6 +65,7 @@ button:hover {
 #disk,
 #temperature,
 #backlight,
+#backlight-slider,
 #wireplumber,
 #tray,
 #network,
@@ -199,4 +200,57 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.3);
     color: @rosewater;
     border-top: 2px solid @rosewater;
+}
+
+/* ---------- Brightness drawer ---------- */
+
+#group-brightness {
+    background-color: @surface0;
+    border-radius: 12px;
+    border: 1px solid @surface1;
+    margin: 4px 2px;
+    padding: 0 4px;
+}
+
+#group-brightness:hover {
+    background-color: @surface1;
+}
+
+#backlight {
+    background: transparent;
+    border: none;
+    color: @yellow;
+}
+
+/* The GTK scale revealed inside the drawer */
+#backlight-slider {
+    min-width: 110px;
+    margin: 0 8px 0 4px;
+    padding: 0;
+}
+
+#backlight-slider trough {
+    min-height: 6px;
+    border-radius: 3px;
+    background-color: @surface2;
+}
+
+#backlight-slider highlight {
+    min-height: 6px;
+    border-radius: 3px;
+    background-color: @yellow;
+}
+
+#backlight-slider slider {
+    min-height: 14px;
+    min-width: 14px;
+    margin: -5px;
+    border-radius: 50%;
+    background-color: @text;
+    box-shadow: none;
+    border: none;
+}
+
+#backlight-slider slider:hover {
+    background-color: @rosewater;
 }

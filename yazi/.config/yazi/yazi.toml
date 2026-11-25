@@ -1,2 +1,7 @@
 [mgr]
 ls_colors = false
+
+[opener]
+edit = [
+    { run = 'nvim "$@"', desc = "Neovim", block = true, for = "unix" }
+]
